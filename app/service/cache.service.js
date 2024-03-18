@@ -20,7 +20,8 @@ function deleteCache(key){
 }
 
 const setCache = (key, model) => {
-    set(key, model, 600000);
+    const expirationTimeInMilliseconds = 2 * 24 * 60 * 60 * 1000;
+    set(key, model, expirationTimeInMilliseconds);
 };
 
 const getCachedModel = (key) => {

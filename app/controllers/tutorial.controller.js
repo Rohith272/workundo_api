@@ -39,7 +39,6 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving tutorials."
       });
     else {
-      console.log(data[0].username);
       res.send(data);
     }
   });
@@ -82,8 +81,6 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-
-  console.log(req.body);
 
   Tutorial.updateById(
     req.params.id,

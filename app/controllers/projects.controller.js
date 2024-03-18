@@ -5,16 +5,15 @@ const { SessionDetails } = require("../models/login.model.js");
 exports.getProjects = (req, res) => {
     const token = req.headers.authorization;
     if (token) {
-        console.log("has token");
         getUserDetails(token, res, (userId) => {
-            User.getProjects({ userId: userId }, (err, userData) => {
+            User.getProjects({ userId: userId }, (err, projectData) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });
                     return;
                 }
                 
-                res.send({ message: "Login successful", sessionId: userId, isSuccess: true });
+                res.send({records :projectData, isSuccess : true});
             });
         });
     } else {
@@ -30,7 +29,7 @@ function getUserDetails(token, res, callback) {
             message: "Success",
             isActive: true
         };
-        res.send(userData);
+        return(cachedData.id);
     } else {
         SessionDetails.getSession({ sessionId: token }, (err, data) => {
             if (err) {
@@ -46,4 +45,24 @@ function getUserDetails(token, res, callback) {
             }
         });
     }
-}
+};
+
+exports.getPendingCount = (req, res) => {
+    const token = req.headers.authorization;
+    if (token) {
+        getUserDetails(token, res, (userId) => {
+            User.getPendingCount({ userId: userId }, (err, projectCount) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });
+                    return;
+                }
+                
+                res.send({records :projectCount, isSuccess : true});
+            });
+        });
+    } else {
+        res.status(401).send({ message: "Missing Authorization Token", isActive: false, errorCode: 401 });
+        return;
+    }
+};

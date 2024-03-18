@@ -11,6 +11,8 @@ module.exports = app => {
 
   router.get("/getProjects", projectController.getProjects);
 
+  router.get("/getProjectPendingCount", projectController.getPendingCount);
+
   // Retrieve all published Tutorials
   router.get("/published", tutorials.findAllPublished);
 

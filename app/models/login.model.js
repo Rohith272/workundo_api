@@ -58,7 +58,6 @@ UserDetails.createLoginSession = (userDetails, result) =>{
                   }
             
                   let sessionId = getSessionIdRes[0].session_id;
-                  console.log("Session created successfully with session_id:", sessionId);
                   result(null, sessionId);
                 });
               });         
