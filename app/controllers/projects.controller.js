@@ -25,10 +25,6 @@ exports.getProjects = (req, res) => {
 function getUserDetails(token, res, callback) {
     const cachedData = cacheService.getCachedModel(token);
     if (cachedData) {
-        const userData = {
-            message: "Success",
-            isActive: true
-        };
         return(cachedData.id);
     } else {
         SessionDetails.getSession({ sessionId: token }, (err, data) => {
@@ -58,7 +54,7 @@ exports.getPendingCount = (req, res) => {
                     return;
                 }
                 
-                res.send({records :projectCount, isSuccess : true});
+                res.send({records :[projectCount], isSuccess : true});
             });
         });
     } else {
