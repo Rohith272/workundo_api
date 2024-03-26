@@ -12,7 +12,6 @@ exports.getProjects = (req, res) => {
                     res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });
                     return;
                 }
-                
                 res.send({records :projectData, isSuccess : true});
             });
         });
@@ -25,7 +24,7 @@ exports.getProjects = (req, res) => {
 function getUserDetails(token, res, callback) {
     const cachedData = cacheService.getCachedModel(token);
     if (cachedData) {
-        return(cachedData.id);
+        callback(cachedData.id);
     } else {
         SessionDetails.getSession({ sessionId: token }, (err, data) => {
             if (err) {
@@ -43,11 +42,11 @@ function getUserDetails(token, res, callback) {
     }
 };
 
-exports.getPendingCount = (req, res) => {
+exports.getBasicDetails = (req, res) => {
     const token = req.headers.authorization;
     if (token) {
         getUserDetails(token, res, (userId) => {
-            User.getPendingCount({ userId: userId }, (err, projectCount) => {
+            User.getBasicDetails({ userId: userId }, (err, projectCount) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });

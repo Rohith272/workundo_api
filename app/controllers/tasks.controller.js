@@ -22,6 +22,46 @@ exports.getTasks = (req, res) => {
     }
 };
 
+exports.checkIn = (req, res) => {
+    const token = req.headers.authorization;
+    if (token) {
+        getUserDetails(token, res, (userId) => {
+            User.checkIn({ userId: userId }, (err, checkInData) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });
+                    return;
+                }
+                
+                res.send({isSuccess : true});
+            });
+        });
+    } else {
+        res.status(401).send({ message: "Missing Authorization Token", isActive: false, errorCode: 401 });
+        return;
+    }
+};
+
+exports.checkOut = (req, res) => {
+    const token = req.headers.authorization;
+    if (token) {
+        getUserDetails(token, res, (userId) => {
+            User.checkOut({ userId: userId }, (err, checkOutData) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send({ message: "Error retrieving project access data", isSuccess: false });
+                    return;
+                }
+                
+                res.send({isSuccess : true});
+            });
+        });
+    } else {
+        res.status(401).send({ message: "Missing Authorization Token", isActive: false, errorCode: 401 });
+        return;
+    }
+};
+
 function getUserDetails(token, res, callback) {
     const cachedData = cacheService.getCachedModel(token);
     if (cachedData) {

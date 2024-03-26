@@ -21,11 +21,13 @@ User.getProjects = (user, result) => {
   });
 };
 
-User.getPendingCount = (user, result) => {
+User.getBasicDetails = (user, result) => {
   let query = `
     SELECT 
       (SELECT COUNT(*) FROM m_project_access pa INNER JOIN m_project p ON p.id = pa.project_id  WHERE pa.user_id = '${user.userId}' AND p.status_id = 1) AS pending_project_count,
-      (SELECT COUNT(*) FROM m_task WHERE user_id = '${user.userId}' AND status_id = 1) AS pending_task_count
+      (SELECT COUNT(*) FROM m_task WHERE user_id = '${user.userId}' AND status_id = 1) AS pending_task_count,
+      (SELECT TIME(check_in) FROM m_attendance WHERE user_id = '${user.userId}' AND DATE(check_in) = curdate()) AS check_in_time,
+      (SELECT TIME(check_out) FROM m_attendance WHERE user_id = '${user.userId}' AND DATE(check_in) = curdate()) AS check_out_time
     FROM 
       dual`;
 

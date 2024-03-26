@@ -12,9 +12,13 @@ module.exports = app => {
 
   router.get("/getProjects", projectController.getProjects);
 
-  router.get("/getProjectPendingCount", projectController.getPendingCount);
+  router.get("/getBasicDetails", projectController.getBasicDetails);
 
   router.get("/getTasks", taskController.getTasks);
+
+  router.post("/checkIn", taskController.checkIn);
+
+  router.post("/checkOut", taskController.checkOut);
 
   // Retrieve all published Tutorials
   router.get("/published", tutorials.findAllPublished);

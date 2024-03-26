@@ -27,4 +27,34 @@ User.getTasks = (user, result) => {
   });
 };
 
+User.checkIn = (user, result) => {
+  let query = `INSERT INTO m_attendance (\`user_id\`, \`check_in\`) VALUES (${user.userId}, current_timestamp())`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+User.checkOut = (user, result) => {
+  let query = `UPDATE m_attendance SET check_out = current_timestamp()`
+
+  if (user.userId) {
+    query += ` WHERE user_id  = ${user.userId} AND check_out IS NULL`;
+  }
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 module.exports = { User };

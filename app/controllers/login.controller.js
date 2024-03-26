@@ -1,8 +1,6 @@
 const { User, UserDetails, SessionDetails } = require("../models/login.model.js");
-const UserSession = require("../models/login.model.js");
 const bcrypt = require("bcrypt");
 const cacheService = require("../service/cache.service.js");
-const { v4: uuidv4 } = require('uuid');
 
 exports.login = (req, res) => {
   if (!req.body) {
@@ -83,7 +81,3 @@ const encryptPassword = (password, salt) => {
     return bcrypt.hashSync(password, salt);
 };
 
-// const generateUniqueId = (username) => {
-//     const uuid = uuidv4().replace(/-/g, '');
-//     return uuid.substring(0, 36);
-// };
